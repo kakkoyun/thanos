@@ -303,7 +303,7 @@ func (c *memcachedClient) SetAsync(_ context.Context, key string, value []byte, 
 
 	if err == errMemcachedAsyncBufferFull {
 		c.skipped.WithLabelValues(opSet, reasonAsyncBufferFull).Inc()
-		level.Debug(c.logger).Log("msg", "failed to store item to memcached, check your configuration", "err", err, "size", len(c.asyncQueue))
+		level.Debug(c.logger).Log("msg", "failed to store item to memcached because the async buffer is full", "err", err, "size", len(c.asyncQueue))
 		return nil
 	}
 	return err
