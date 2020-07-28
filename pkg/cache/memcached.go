@@ -13,6 +13,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promauto"
 
 	"github.com/thanos-io/thanos/pkg/cacheutil"
+	"github.com/thanos-io/thanos/pkg/logging"
 )
 
 // MemcachedCache is a memcached-based cache.
@@ -67,8 +68,9 @@ func (c *MemcachedCache) Store(ctx context.Context, data map[string][]byte, ttl 
 		}
 	}
 
+	limitedLogger := logging.Limit(c.logger, time.Second, 1)
 	if firstErr != nil {
-		level.Warn(c.logger).Log("msg", "failed to store one or more items into memcached", "failed", failed, "firstErr", firstErr)
+		level.Warn(limitedLogger).Log("msg", "failed to store one or more items into memcached", "failed", failed, "firstErr", firstErr)
 	}
 }
 
