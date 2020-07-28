@@ -417,7 +417,6 @@ func (c *memcachedClient) enqueueAsync(op func()) error {
 		return nil
 	default:
 		c.skipped.WithLabelValues(opSet, reasonAsyncBufferFull).Inc()
-		level.Debug(c.logger).Log("msg", "the async buffer is full", "size", len(c.asyncQueue))
 		return errMemcachedAsyncBufferFull
 	}
 }
